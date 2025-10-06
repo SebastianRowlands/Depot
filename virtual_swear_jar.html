@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Virtual Swear Jar</title>
+  <style>
+    body {
+      background: #0a0a0a;
+      color: #e5e5e5;
+      font-family: system-ui, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .jar {
+      text-align: center;
+      background: #18181b;
+      border: 1px solid #27272a;
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      width: 300px;
+    }
+    .count { font-size: 4rem; font-weight: bold; }
+    .buttons { margin-top: 1rem; display: flex; gap: 1rem; justify-content: center; }
+    button {
+      background: #10b981;
+      border: none;
+      padding: 0.6rem 1rem;
+      border-radius: 0.5rem;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button.reset {
+      background: transparent;
+      border: 1px solid #444;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <div class="jar">
+    <h1>🫙 Virtual Swear Jar</h1>
+    <div class="count" id="count">0</div>
+    <p>Total Fines: £<span id="total">0.00</span></p>
+    <div class="buttons">
+      <button id="add">Add Swear</button>
+      <button id="reset" class="reset">Reset</button>
+    </div>
+  </div>
+
+  <script>
+    const COST = 0.5;
+    const countEl = document.getElementById('count');
+    const totalEl = document.getElementById('total');
+    const addBtn = document.getElementById('add');
+    const resetBtn = document.getElementById('reset');
+
+    let count = parseInt(localStorage.getItem('swearCount') || 0);
+    updateDisplay();
+
+    addBtn.onclick = () => {
+      count++;
+      save();
+    };
+
+    resetBtn.onclick = () => {
+      if (confirm("Reset your swear jar?")) {
+        count = 0;
+        save();
+      }
+    };
+
+    function save() {
+      localStorage.setItem('swearCount', count);
+      updateDisplay();
+    }
+
+    function updateDisplay() {
+      countEl.textContent = count;
+      totalEl.textContent = (count * COST).toFixed(2);
+    }
+  </script>
+</body>
+</html>
